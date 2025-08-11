@@ -1,0 +1,30 @@
+name: SIS Project Deployment
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Compile SIS Project
+        run: |
+          mkdir -p target/classes
+          javac -d target/classes src/main/java/Sis/*.java
+
+      - name: Run SIS Project
+        run: |
+          java -cp target/classes Sis.Main
